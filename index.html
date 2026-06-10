@@ -947,7 +947,7 @@ function typeLine(){
 function typeText(el,text,cb){let i=0;const iv=setInterval(()=>{el.textContent+=text[i];i++;if(i>=text.length){clearInterval(iv);cb()}},40)}
 setTimeout(typeLine,1000);
 // ── CHATBOT ──
-const SYSTEM_PROMPT = `Sos el asistente virtual de SystemSolutions, un servicio técnico informático premium ubicado en Buenos Aires (CABA y Gran Buenos Aires), Argentina.
+const SYSTEM_PROMPT = `Terabyte el asistente virtual de SystemSolutions, un servicio técnico informático premium ubicado en Buenos Aires (CABA y Gran Buenos Aires), Argentina.
 
 INFORMACIÓN DEL NEGOCIO:
 - Fundador: Fernando E., +15 años de experiencia en hardware, software y redes
@@ -996,7 +996,7 @@ function toggleChat(){
   if(win.classList.contains('chat-open') && !chatInitialized){
     chatInitialized = true;
     document.getElementById('chatBubble').querySelector('.chat-badge').style.display='none';
-    addBotMessage('¡Hola! 👋 Soy el asistente de **SystemSolutions**. ¿En qué te puedo ayudar hoy?');
+    addBotMessage('¡Hola! 👋 Soy Terabyte, el asistente de **SystemSolutions**. ¿En qué te puedo ayudar hoy?');
   }
   if(win.classList.contains('chat-open')) setTimeout(()=>document.getElementById('chatInput').focus(),300);
 }
