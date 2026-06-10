@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>System Solutions | Gestión Pro</title>
+<!-- PWA META -->
+<meta name="application-name" content="SS Gestión">
+<meta name="description" content="Sistema de gestión para System Solutions">
+<meta name="theme-color" content="#03050a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SS Gestión">
+<link rel="manifest" id="pwa-manifest">
+<link rel="apple-touch-icon" href="https://fernandoercoli.github.io/SoporteTecnico/favicon.png">
+<link rel="icon" type="image/png" href="https://fernandoercoli.github.io/SoporteTecnico/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#03050a;--surface:#080d18;--card:#0a0e1a;--card2:#0d1220;
+  --primary:#7c6dfa;--primary-dim:rgba(124,109,250,0.15);
+  --cyan:#4af0ff;--cyan-dim:rgba(74,240,255,0.12);
+  --amber:#ffb700;--amber-dim:rgba(255,183,0,0.12);
+  --green:#25D366;--green-dim:rgba(37,211,102,0.12);
+  --red:#ff4b4b;--red-dim:rgba(255,75,75,0.12);
+  --text:#e0e6ed;--muted:#4a5568;--border:#131929;--border2:#1e2a3d;
+  --sidebar-w:220px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14px;display:flex;min-height:100vh;overflow-x:hidden}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
+.sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid var(--border)}
+.sidebar-logo h1{font-size:13px;font-weight:800;letter-spacing:2px;color:var(--text)}
+.sidebar-logo span{color:var(--primary)}
+.sidebar-logo p{font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px}
+.sidebar-nav{flex:1;padding:16px 0;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--muted);transition:all 0.15s;border-left:3px solid transparent;user-select:none}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+.nav-item.active{color:var(--primary);background:var(--primary-dim);border-left-color:var(--primary)}
+.nav-item svg{flex-shrink:0;opacity:0.7}
+.nav-item.active svg{opacity:1}
+.nav-label{font-size:11px}
+.sidebar-footer{padding:16px 20px;border-top:1px solid var(--border);font-size:10px;color:var(--muted)}
+#main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-size:13px;font-weight:800;letter-spacing:2px;color:var(--text)}
+.topbar-title span{color:var(--primary)}
+.db-status{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.db-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.content{padding:28px;flex:1}
+.section{display:none}
+.section.active{display:block}
+.card{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:24px;margin-bottom:20px}
+.card-title{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--primary);margin-bottom:20px}
+.card-title::before{content:"// ";color:var(--muted)}
+.form-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.form-grid.cols3{grid-template-columns:1fr 1fr 1fr}
+.form-grid .span2{grid-column:span 2}
+.form-grid .span3{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:10px;letter-spacing:1px;color:var(--muted);font-weight:700}
+input,select,textarea{background:#0a0f1e;border:1px solid var(--border2);color:var(--text);padding:11px 14px;border-radius:6px;font-family:inherit;font-size:13px;font-weight:700;width:100%;transition:border-color 0.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);outline:none}
+textarea{resize:vertical;min-height:80px}
+select option{background:#0a0f1e}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:6px;font-family:inherit;font-size:12px;font-weight:800;letter-spacing:1px;cursor:pointer;border:none;transition:all 0.15s;white-space:nowrap}
+.btn-primary{background:var(--primary);color:#000}
+.btn-primary:hover{background:#9185ff}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border2)}
+.btn-ghost:hover{color:var(--text)}
+.btn-full{width:100%;justify-content:center;margin-top:16px}
+.btn-sm{padding:6px 12px;font-size:11px}
+.btn-wa{background:var(--green-dim);color:var(--green);border:1px solid rgba(37,211,102,0.25)}
+.btn-wa:hover{background:var(--green);color:#000}
+.btn-edit{background:var(--primary-dim);color:var(--primary);border:1px solid rgba(124,109,250,0.25)}
+.btn-edit:hover{background:var(--primary);color:#000}
+.btn-del{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,75,75,0.25)}
+.btn-del:hover{background:var(--red);color:#fff}
+.search-bar{position:relative;margin-bottom:16px}
+.search-bar input{padding-left:38px}
+.search-bar svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:0.4}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th{color:var(--muted);text-align:left;padding:10px 14px;font-size:10px;letter-spacing:1.5px;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:13px 14px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.td-actions{display:flex;gap:6px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:800;letter-spacing:0.5px;white-space:nowrap}
+.badge-pendiente{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,183,0,0.2)}
+.badge-taller{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,183,0,0.2)}
+.badge-listo{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(74,240,255,0.2)}
+.badge-ingreso{background:var(--green-dim);color:var(--green);border:1px solid rgba(37,211,102,0.2)}
+.badge-egreso{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,75,75,0.2)}
+.badge-aprobado{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(74,240,255,0.2)}
+.badge-rechazado{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,75,75,0.2)}
+.badge-espera{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,183,0,0.2)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:18px}
+.stat-val{font-size:22px;font-weight:800;margin-bottom:4px}
+.stat-label{font-size:10px;color:var(--muted);letter-spacing:1px}
+.stat-cyan{color:var(--cyan)}.stat-primary{color:var(--primary)}.stat-amber{color:var(--amber)}.stat-green{color:var(--green)}
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty svg{margin-bottom:12px;opacity:0.3}
+.empty p{font-size:12px;letter-spacing:1px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(3,5,10,0.88);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:20px}
+.overlay.active{display:flex}
+.modal{background:var(--card);border:1px solid var(--border2);border-top:3px solid var(--primary);border-radius:10px;padding:28px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;animation:slideIn 0.2s ease}
+.modal.wa{border-top-color:var(--green)}
+.modal h3{font-size:14px;font-weight:800;letter-spacing:1px;margin-bottom:20px;color:var(--text);display:flex;align-items:center;gap:8px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
+@keyframes slideIn{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.wa-templates{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tpl-btn{background:var(--green-dim);border:1px solid rgba(37,211,102,0.3);color:var(--green);padding:7px 14px;border-radius:20px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;transition:all 0.15s}
+.tpl-btn:hover{background:var(--green);color:#000}
+.wa-dest{font-size:11px;color:var(--muted);margin-bottom:12px}
+.wa-dest span{color:var(--cyan)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);border:1px solid var(--primary);color:var(--primary);padding:12px 24px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.err{border-color:var(--red);color:var(--red)}
+.saldo-auto{font-size:11px;color:var(--cyan);margin-top:4px}
+/* CAJA AUTO TAG */
+.caja-auto{font-size:10px;color:var(--green);background:var(--green-dim);border:1px solid rgba(37,211,102,0.2);padding:2px 8px;border-radius:4px;margin-left:6px;letter-spacing:1px}
+@media(max-width:700px){
+  #sidebar{width:60px;min-width:60px}
+  .nav-label,.sidebar-logo p,.sidebar-logo h1{display:none}
+  #main{margin-left:60px}
+  .sidebar-logo{padding:16px 0;display:flex;justify-content:center}
+  .nav-item{padding:14px;justify-content:center}
+  .form-grid.cols3{grid-template-columns:1fr}
+  .form-grid .span2,.form-grid .span3{grid-column:1/-1}
+}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <h1>[<span>SS</span>]</h1>
+    <p>SYSTEM SOLUTIONS</p>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-item active" onclick="goTo('trabajos')" id="nav-trabajos">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <span class="nav-label">TRABAJOS</span>
+    </div>
+    <div class="nav-item" onclick="goTo('repuestos')" id="nav-repuestos">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      <span class="nav-label">REPUESTOS</span>
+    </div>
+    <div class="nav-item" onclick="goTo('caja')" id="nav-caja">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      <span class="nav-label">CAJA</span>
+    </div>
+    <div class="nav-item" onclick="goTo('proveedores')" id="nav-proveedores">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      <span class="nav-label">PROVEEDORES</span>
+    </div>
+    <div class="nav-item" onclick="goTo('presupuestos')" id="nav-presupuestos">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span class="nav-label">PRESUPUESTOS</span>
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div style="margin-bottom:8px">v2.1 · IndexedDB</div>
+    <button onclick="exportarDatos()" style="background:var(--primary);color:#000;border:none;padding:8px 0;border-radius:6px;font-family:inherit;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;width:100%;margin-bottom:6px">📤 EXPORTAR</button>
+    <label style="background:var(--green-dim);color:var(--green);border:1px solid rgba(37,211,102,0.3);padding:8px 0;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;width:100%;display:block;text-align:center">
+      📥 IMPORTAR
+      <input type="file" accept=".json" onchange="importarDatos(event)" style="display:none">
+    </label>
+  </div>
+</nav>
+
+<div id="main">
+  <div class="topbar">
+    <span class="topbar-title">[<span>SYSTEM SOLUTIONS</span>] GESTIÓN PRO</span>
+    <div class="db-status"><div class="db-dot"></div><span id="dbStatus">Conectando...</span></div>
+  </div>
+  <div class="content">
+
+    <!-- TRABAJOS -->
+    <div class="section active" id="sec-trabajos">
+      <div class="stats-grid" id="stats-trabajos"></div>
+      <div class="card">
+        <div class="card-title">NUEVO TRABAJO</div>
+        <div class="form-grid cols3">
+          <div class="field"><label>CLIENTE</label><input id="t-cliente" placeholder="Nombre del cliente"></div>
+          <div class="field"><label>WHATSAPP</label><input id="t-whatsapp" placeholder="5491112345678"></div>
+          <div class="field"><label>EQUIPO</label><input id="t-equipo" placeholder="Notebook Dell, PC, etc."></div>
+          <div class="field span2"><label>TRABAJO REALIZADO</label><input id="t-trabajo" placeholder="Descripción del trabajo"></div>
+          <div class="field"><label>ESTADO</label>
+            <select id="t-estado"><option value="Pendiente">Pendiente</option><option value="Taller">En Taller</option><option value="Listo">Listo / Entregado</option></select>
+          </div>
+          <div class="field"><label>MONTO TOTAL $</label><input id="t-monto" type="number" placeholder="0" oninput="calcSaldo('t')"></div>
+          <div class="field"><label>SEÑA / ANTICIPO $</label><input id="t-senia" type="number" placeholder="0" oninput="calcSaldo('t')"><div class="saldo-auto" id="t-saldo-preview"></div></div>
+          <div class="field"><label>FECHA ENTREGA EST.</label><input id="t-fechaEntrega" type="date"></div>
+          <div class="field span3"><label>NOTAS INTERNAS</label><textarea id="t-notas" placeholder="Observaciones, contraseñas, etc."></textarea></div>
+        </div>
+        <button class="btn btn-primary btn-full" id="btnGuardarTrabajo" onclick="guardarTrabajo()">&gt; GUARDAR TRABAJO</button>
+      </div>
+      <div class="card">
+        <div class="search-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input id="buscar-trabajos" oninput="renderTrabajos()" placeholder="Buscar cliente, equipo, trabajo...">
+        </div>
+        <div class="table-wrap" id="tabla-trabajos"></div>
+      </div>
+    </div>
+
+    <!-- REPUESTOS -->
+    <div class="section" id="sec-repuestos">
+      <div class="stats-grid" id="stats-repuestos"></div>
+      <div class="card">
+        <div class="card-title">AGREGAR REPUESTO / STOCK</div>
+        <div class="form-grid cols3">
+          <div class="field"><label>NOMBRE</label><input id="r-nombre" placeholder="Nombre del repuesto"></div>
+          <div class="field"><label>CANTIDAD</label><input id="r-cantidad" type="number" placeholder="0"></div>
+          <div class="field"><label>PROVEEDOR</label><input id="r-proveedor" placeholder="Nombre del proveedor"></div>
+          <div class="field"><label>PRECIO COMPRA $</label><input id="r-precioCompra" type="number" placeholder="0"></div>
+          <div class="field"><label>PRECIO VENTA $</label><input id="r-precioVenta" type="number" placeholder="0"></div>
+          <div class="field"><label>DESCRIPCIÓN</label><input id="r-descripcion" placeholder="Detalle adicional"></div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="guardarRepuesto()">&gt; AGREGAR AL STOCK</button>
+      </div>
+      <div class="card">
+        <div class="search-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input id="buscar-repuestos" oninput="renderRepuestos()" placeholder="Buscar repuesto o proveedor...">
+        </div>
+        <div class="table-wrap" id="tabla-repuestos"></div>
+      </div>
+    </div>
+
+    <!-- CAJA -->
+    <div class="section" id="sec-caja">
+      <div class="stats-grid" id="stats-caja"></div>
+      <div class="card">
+        <div class="card-title">REGISTRAR MOVIMIENTO MANUAL</div>
+        <div class="form-grid cols3">
+          <div class="field"><label>TIPO</label><select id="c-tipo"><option value="ingreso">Ingreso</option><option value="egreso">Egreso</option></select></div>
+          <div class="field"><label>MONTO $</label><input id="c-monto" type="number" placeholder="0"></div>
+          <div class="field"><label>CATEGORÍA</label>
+            <select id="c-categoria">
+              <option value="Trabajo">Trabajo</option><option value="Seña">Seña</option>
+              <option value="Repuesto">Compra Repuesto</option><option value="Alquiler">Alquiler</option>
+              <option value="Servicio">Servicio</option><option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="field span2"><label>DESCRIPCIÓN</label><input id="c-descripcion" placeholder="Detalle del movimiento"></div>
+          <div class="field"><label>FECHA</label><input id="c-fecha" type="date"></div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="guardarCaja()">&gt; REGISTRAR MOVIMIENTO</button>
+      </div>
+      <div class="card">
+        <div class="search-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input id="buscar-caja" oninput="renderCaja()" placeholder="Buscar movimiento...">
+        </div>
+        <div class="table-wrap" id="tabla-caja"></div>
+      </div>
+    </div>
+
+    <!-- PROVEEDORES -->
+    <div class="section" id="sec-proveedores">
+      <div class="card">
+        <div class="card-title">AGREGAR PROVEEDOR</div>
+        <div class="form-grid cols3">
+          <div class="field"><label>NOMBRE</label><input id="p-nombre" placeholder="Nombre o empresa"></div>
+          <div class="field"><label>WHATSAPP</label><input id="p-whatsapp" placeholder="5491112345678"></div>
+          <div class="field"><label>EMAIL</label><input id="p-email" type="email" placeholder="mail@ejemplo.com"></div>
+          <div class="field"><label>DIRECCIÓN</label><input id="p-direccion" placeholder="Dirección"></div>
+          <div class="field span2"><label>NOTAS</label><input id="p-notas" placeholder="Observaciones, condiciones, etc."></div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="guardarProveedor()">&gt; GUARDAR PROVEEDOR</button>
+      </div>
+      <div class="card">
+        <div class="search-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input id="buscar-proveedores" oninput="renderProveedores()" placeholder="Buscar proveedor...">
+        </div>
+        <div class="table-wrap" id="tabla-proveedores"></div>
+      </div>
+    </div>
+
+    <!-- PRESUPUESTOS -->
+    <div class="section" id="sec-presupuestos">
+      <div class="stats-grid" id="stats-presupuestos"></div>
+      <div class="card">
+        <div class="card-title">NUEVO PRESUPUESTO</div>
+        <div class="form-grid cols3">
+          <div class="field"><label>CLIENTE</label><input id="pre-cliente" placeholder="Nombre del cliente"></div>
+          <div class="field"><label>WHATSAPP</label><input id="pre-whatsapp" placeholder="5491112345678"></div>
+          <div class="field"><label>EQUIPO</label><input id="pre-equipo" placeholder="Notebook, PC, etc."></div>
+          <div class="field span2"><label>DESCRIPCIÓN DEL TRABAJO</label><input id="pre-descripcion" placeholder="Detalle del presupuesto"></div>
+          <div class="field"><label>MONTO $</label><input id="pre-monto" type="number" placeholder="0"></div>
+          <div class="field"><label>ESTADO</label>
+            <select id="pre-estado"><option value="Espera">En espera</option><option value="Aprobado">Aprobado</option><option value="Rechazado">Rechazado</option></select>
+          </div>
+          <div class="field"><label>FECHA</label><input id="pre-fecha" type="date"></div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="guardarPresupuesto()">&gt; GUARDAR PRESUPUESTO</button>
+      </div>
+      <div class="card">
+        <div class="search-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input id="buscar-presupuestos" oninput="renderPresupuestos()" placeholder="Buscar presupuesto...">
+        </div>
+        <div class="table-wrap" id="tabla-presupuestos"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- MODAL TRABAJO -->
+<div class="overlay" id="modal-trabajo" onclick="closeModalOutside(event,'modal-trabajo')">
+  <div class="modal">
+    <h3>✏️ EDITAR TRABAJO</h3>
+    <div class="form-grid cols3">
+      <div class="field"><label>CLIENTE</label><input id="et-cliente"></div>
+      <div class="field"><label>WHATSAPP</label><input id="et-whatsapp"></div>
+      <div class="field"><label>EQUIPO</label><input id="et-equipo"></div>
+      <div class="field span2"><label>TRABAJO</label><input id="et-trabajo"></div>
+      <div class="field"><label>ESTADO</label><select id="et-estado"><option value="Pendiente">Pendiente</option><option value="Taller">En Taller</option><option value="Listo">Listo / Entregado</option></select></div>
+      <div class="field"><label>MONTO $</label><input id="et-monto" type="number" oninput="calcSaldo('et')"></div>
+      <div class="field"><label>SEÑA $</label><input id="et-senia" type="number" oninput="calcSaldo('et')"><div class="saldo-auto" id="et-saldo-preview"></div></div>
+      <div class="field"><label>FECHA ENTREGA</label><input id="et-fechaEntrega" type="date"></div>
+      <div class="field span3"><label>NOTAS</label><textarea id="et-notas"></textarea></div>
+    </div>
+    <div id="et-caja-aviso" style="display:none;font-size:11px;color:var(--green);background:var(--green-dim);border:1px solid rgba(37,211,102,0.2);padding:10px 14px;border-radius:6px;margin-top:12px;letter-spacing:0.5px"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-trabajo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="updateTrabajo()">💾 GUARDAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REPUESTO -->
+<div class="overlay" id="modal-repuesto" onclick="closeModalOutside(event,'modal-repuesto')">
+  <div class="modal">
+    <h3>✏️ EDITAR REPUESTO</h3>
+    <div class="form-grid cols3">
+      <div class="field"><label>NOMBRE</label><input id="er-nombre"></div>
+      <div class="field"><label>CANTIDAD</label><input id="er-cantidad" type="number"></div>
+      <div class="field"><label>PROVEEDOR</label><input id="er-proveedor"></div>
+      <div class="field"><label>PRECIO COMPRA $</label><input id="er-precioCompra" type="number"></div>
+      <div class="field"><label>PRECIO VENTA $</label><input id="er-precioVenta" type="number"></div>
+      <div class="field"><label>DESCRIPCIÓN</label><input id="er-descripcion"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-repuesto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="updateRepuesto()">💾 GUARDAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CAJA -->
+<div class="overlay" id="modal-caja" onclick="closeModalOutside(event,'modal-caja')">
+  <div class="modal">
+    <h3>✏️ EDITAR MOVIMIENTO</h3>
+    <div class="form-grid cols3">
+      <div class="field"><label>TIPO</label><select id="ec-tipo"><option value="ingreso">Ingreso</option><option value="egreso">Egreso</option></select></div>
+      <div class="field"><label>MONTO $</label><input id="ec-monto" type="number"></div>
+      <div class="field"><label>CATEGORÍA</label><select id="ec-categoria"><option value="Trabajo">Trabajo</option><option value="Seña">Seña</option><option value="Repuesto">Compra Repuesto</option><option value="Alquiler">Alquiler</option><option value="Servicio">Servicio</option><option value="Otro">Otro</option></select></div>
+      <div class="field span2"><label>DESCRIPCIÓN</label><input id="ec-descripcion"></div>
+      <div class="field"><label>FECHA</label><input id="ec-fecha" type="date"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-caja')">Cancelar</button>
+      <button class="btn btn-primary" onclick="updateCaja()">💾 GUARDAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PROVEEDOR -->
+<div class="overlay" id="modal-proveedor" onclick="closeModalOutside(event,'modal-proveedor')">
+  <div class="modal">
+    <h3>✏️ EDITAR PROVEEDOR</h3>
+    <div class="form-grid cols3">
+      <div class="field"><label>NOMBRE</label><input id="ep-nombre"></div>
+      <div class="field"><label>WHATSAPP</label><input id="ep-whatsapp"></div>
+      <div class="field"><label>EMAIL</label><input id="ep-email" type="email"></div>
+      <div class="field"><label>DIRECCIÓN</label><input id="ep-direccion"></div>
+      <div class="field span2"><label>NOTAS</label><input id="ep-notas"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-proveedor')">Cancelar</button>
+      <button class="btn btn-primary" onclick="updateProveedor()">💾 GUARDAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PRESUPUESTO -->
+<div class="overlay" id="modal-presupuesto" onclick="closeModalOutside(event,'modal-presupuesto')">
+  <div class="modal">
+    <h3>✏️ EDITAR PRESUPUESTO</h3>
+    <div class="form-grid cols3">
+      <div class="field"><label>CLIENTE</label><input id="epre-cliente"></div>
+      <div class="field"><label>WHATSAPP</label><input id="epre-whatsapp"></div>
+      <div class="field"><label>EQUIPO</label><input id="epre-equipo"></div>
+      <div class="field span2"><label>DESCRIPCIÓN</label><input id="epre-descripcion"></div>
+      <div class="field"><label>MONTO $</label><input id="epre-monto" type="number"></div>
+      <div class="field"><label>ESTADO</label><select id="epre-estado"><option value="Espera">En espera</option><option value="Aprobado">Aprobado</option><option value="Rechazado">Rechazado</option></select></div>
+      <div class="field"><label>FECHA</label><input id="epre-fecha" type="date"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-presupuesto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="updatePresupuesto()">💾 GUARDAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL WHATSAPP -->
+<div class="overlay" id="modal-wa" onclick="closeModalOutside(event,'modal-wa')">
+  <div class="modal wa">
+    <h3>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      ENVIAR WHATSAPP
+    </h3>
+    <div class="wa-dest">Destinatario: <span id="wa-num"></span></div>
+    <div class="wa-templates" id="wa-templates"></div>
+    <div class="field"><label>MENSAJE</label><textarea id="wa-msg" style="min-height:130px"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-wa')">Cancelar</button>
+      <button class="btn" style="background:var(--green);color:#000" onclick="enviarWA()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="black"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        ABRIR EN WHATSAPP
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DB_NAME='SystemSolutionsDB',DB_VERSION=1;let db;
+function initDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onerror=()=>rej(r.error);r.onsuccess=()=>{db=r.result;res(db)};r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('trabajos')){const s=d.createObjectStore('trabajos',{keyPath:'id',autoIncrement:true});s.createIndex('cliente','cliente',{unique:false})}if(!d.objectStoreNames.contains('repuestos'))d.createObjectStore('repuestos',{keyPath:'id',autoIncrement:true});if(!d.objectStoreNames.contains('caja')){const s=d.createObjectStore('caja',{keyPath:'id',autoIncrement:true});s.createIndex('fecha','fecha',{unique:false})}if(!d.objectStoreNames.contains('proveedores'))d.createObjectStore('proveedores',{keyPath:'id',autoIncrement:true});if(!d.objectStoreNames.contains('presupuestos'))d.createObjectStore('presupuestos',{keyPath:'id',autoIncrement:true})}})}
+function dbAdd(s,data){return new Promise((res,rej)=>{const tx=db.transaction(s,'readwrite'),r=tx.objectStore(s).add(data);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function dbGetAll(s){return new Promise((res,rej)=>{const tx=db.transaction(s,'readonly'),r=tx.objectStore(s).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function dbGet(s,id){return new Promise((res,rej)=>{const tx=db.transaction(s,'readonly'),r=tx.objectStore(s).get(id);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function dbPut(s,data){return new Promise((res,rej)=>{const tx=db.transaction(s,'readwrite'),r=tx.objectStore(s).put(data);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function dbDelete(s,id){return new Promise((res,rej)=>{const tx=db.transaction(s,'readwrite'),r=tx.objectStore(s).delete(id);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+
+function toast(msg,err=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(err?' err':'');setTimeout(()=>t.className='toast',3500)}
+function goTo(sec){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('sec-'+sec).classList.add('active');document.getElementById('nav-'+sec).classList.add('active');({trabajos:renderTrabajos,repuestos:renderRepuestos,caja:renderCaja,proveedores:renderProveedores,presupuestos:renderPresupuestos})[sec]()}
+function openModal(id){document.getElementById(id).classList.add('active')}
+function closeModal(id){document.getElementById(id).classList.remove('active')}
+function closeModalOutside(e,id){if(e.target===document.getElementById(id))closeModal(id)}
+function fmtPeso(n){return '$'+Number(n||0).toLocaleString('es-AR')}
+function fmtFecha(f){if(!f)return '—';const[y,m,d]=f.split('-');return `${d}/${m}/${y}`}
+function today(){return new Date().toISOString().split('T')[0]}
+function calcSaldo(p){
+  const m=parseFloat(document.getElementById(p+'-monto').value)||0;
+  const s=parseFloat(document.getElementById(p+'-senia').value)||0;
+  const el=document.getElementById(p+'-saldo-preview');
+  if(el) el.textContent=m>0?(m-s>=0?`Saldo pendiente: ${fmtPeso(m-s)}`:'⚠ Seña mayor al monto'):'';
+  // Mostrar aviso en modal edición si va a registrar en caja
+  if(p==='et'){
+    const aviso=document.getElementById('et-caja-aviso');
+    const estado=document.getElementById('et-estado').value;
+    if(aviso && estado==='Listo' && (m-s)>0){
+      aviso.style.display='block';
+      aviso.textContent=`✓ Al guardar como "Listo" se registrará ${fmtPeso(m-s)} como ingreso en Caja automáticamente.`;
+    } else if(aviso){
+      aviso.style.display='none';
+    }
+  }
+}
+function filter(arr,q,fields){if(!q)return arr;const ql=q.toLowerCase();return arr.filter(item=>fields.some(f=>String(item[f]||'').toLowerCase().includes(ql)))}
+function emptyState(msg){return `<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg><p>${msg}</p></div>`}
+
+// ── WHATSAPP ──
+let waData=null;
+const waTpls={
+  listo:i=>`Hola ${i.cliente}! 👋 Te avisamos que tu *${i.equipo}* ya está listo para retirar.\n\nTrabajo: ${i.trabajo}\nMonto: ${fmtPeso(i.monto)}${(i.saldo||0)>0?'\nSaldo pendiente: '+fmtPeso(i.saldo):''}\n\n🙌 Gracias por elegirnos!`,
+  presupuesto:i=>`Hola ${i.cliente}! Te pasamos el presupuesto para tu *${i.equipo}*:\n\n✅ Trabajo: ${i.trabajo}\n💰 Monto: ${fmtPeso(i.monto)}\n\nAvisanos si lo aprobás. Saludos!`,
+  demora:i=>`Hola ${i.cliente}! Te queremos avisar que tu *${i.equipo}* va a demorar un poco más de lo previsto. ⏳ Te confirmamos en cuanto tengamos novedades. Disculpá los inconvenientes! 🙏`,
+  retiro:i=>`Hola ${i.cliente}! 👋 Te recordamos que tu *${i.equipo}* está listo y esperándote. 📦 Pasá cuando puedas. ¡Hasta pronto!`,
+  presupuestoDoc:i=>`Hola ${i.cliente}! Te enviamos el presupuesto para tu *${i.equipo}*:\n\n📋 ${i.descripcion}\n💰 Monto: ${fmtPeso(i.monto)}\n\nAvisanos si lo aprobás. Saludos!`
+};
+function abrirWA(item,tipo='trabajo'){
+  waData={...item,tipo};
+  document.getElementById('wa-num').textContent=item.whatsapp||'(sin número)';
+  const tDiv=document.getElementById('wa-templates');
+  if(tipo==='trabajo'){
+    tDiv.innerHTML=`<button class="tpl-btn" onclick="setWATpl('listo')">✅ Listo</button><button class="tpl-btn" onclick="setWATpl('presupuesto')">💰 Presupuesto</button><button class="tpl-btn" onclick="setWATpl('demora')">⏳ Demora</button><button class="tpl-btn" onclick="setWATpl('retiro')">📦 Retiro</button>`;
+    document.getElementById('wa-msg').value=waTpls[item.estado==='Listo'?'listo':'presupuesto'](item);
+  } else {
+    tDiv.innerHTML=`<button class="tpl-btn" onclick="setWATpl('presupuestoDoc')">📋 Presupuesto</button>`;
+    document.getElementById('wa-msg').value=waTpls.presupuestoDoc(item);
+  }
+  openModal('modal-wa');
+}
+function setWATpl(tpl){if(waData&&waTpls[tpl])document.getElementById('wa-msg').value=waTpls[tpl](waData)}
+function enviarWA(){
+  if(!waData)return;
+  const numero=String(waData.whatsapp||'').replace(/\D/g,'');
+  if(!numero){toast('Sin número de WhatsApp',true);return}
+  window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(document.getElementById('wa-msg').value),'_blank');
+  closeModal('modal-wa');
+}
+
+// ── TRABAJOS ──
+let editTrabajoId=null;
+
+async function guardarTrabajo(){
+  const cliente=document.getElementById('t-cliente').value.trim();
+  if(!cliente){toast('Ingresá al menos el nombre del cliente',true);return}
+  const monto=parseFloat(document.getElementById('t-monto').value)||0;
+  const senia=parseFloat(document.getElementById('t-senia').value)||0;
+  const data={
+    cliente,
+    whatsapp:document.getElementById('t-whatsapp').value.trim(),
+    equipo:document.getElementById('t-equipo').value.trim(),
+    trabajo:document.getElementById('t-trabajo').value.trim(),
+    monto,senia,saldo:monto-senia,
+    estado:document.getElementById('t-estado').value,
+    fechaEntrega:document.getElementById('t-fechaEntrega').value,
+    notas:document.getElementById('t-notas').value.trim(),
+    fechaIngreso:today()
+  };
+  const btn=document.getElementById('btnGuardarTrabajo');
+  btn.disabled=true;btn.textContent='Guardando...';
+
+  const newId=await dbAdd('trabajos',data);
+
+  // ✅ AUTO-CAJA: Si hay seña → ingreso automático en Caja
+  if(senia>0){
+    await dbAdd('caja',{
+      tipo:'ingreso',
+      monto:senia,
+      categoria:'Seña',
+      descripcion:`Seña — ${data.cliente} · ${data.equipo||'equipo'}`,
+      fecha:today(),
+      auto:true,
+      trabajoId:newId
+    });
+  }
+
+  ['t-cliente','t-whatsapp','t-equipo','t-trabajo','t-monto','t-senia','t-fechaEntrega','t-notas'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('t-saldo-preview').textContent='';
+  toast('✅ Trabajo guardado'+(senia>0?` · Seña ${fmtPeso(senia)} registrada en Caja`:''));
+  renderTrabajos();
+  btn.disabled=false;btn.textContent='> GUARDAR TRABAJO';
+}
+
+async function renderTrabajos(){
+  const q=document.getElementById('buscar-trabajos').value;
+  let data=await dbGetAll('trabajos');
+  data=filter(data,q,['cliente','equipo','trabajo','estado']).reverse();
+  const total=data.length,pend=data.filter(d=>d.estado!=='Listo').length,listos=data.filter(d=>d.estado==='Listo').length,saldoTotal=data.filter(d=>d.estado!=='Listo').reduce((a,b)=>a+(b.saldo||0),0);
+  document.getElementById('stats-trabajos').innerHTML=`<div class="stat-card"><div class="stat-val stat-primary">${total}</div><div class="stat-label">TOTAL</div></div><div class="stat-card"><div class="stat-val stat-amber">${pend}</div><div class="stat-label">EN PROCESO</div></div><div class="stat-card"><div class="stat-val stat-cyan">${listos}</div><div class="stat-label">LISTOS</div></div><div class="stat-card"><div class="stat-val stat-green">${fmtPeso(saldoTotal)}</div><div class="stat-label">SALDO A COBRAR</div></div>`;
+  const wrap=document.getElementById('tabla-trabajos');
+  if(!data.length){wrap.innerHTML=emptyState('SIN TRABAJOS REGISTRADOS');return}
+  wrap.innerHTML='<table><thead><tr><th>CLIENTE</th><th>EQUIPO</th><th>TRABAJO</th><th>MONTO</th><th>SEÑA</th><th>SALDO</th><th>ESTADO</th><th>ENTREGA</th><th>ACCIONES</th></tr></thead><tbody>'+data.map(item=>{
+    const est=item.estado||'Pendiente',estTxt=est==='Taller'?'EN TALLER':est.toUpperCase();
+    const safeItem=JSON.stringify(item).replace(/\\/g,'\\\\').replace(/"/g,'&quot;');
+    return `<tr>
+      <td style="color:#fff;font-weight:800">${item.cliente}</td>
+      <td style="color:var(--cyan)">${item.equipo||'—'}</td>
+      <td style="color:var(--muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${item.trabajo||''}">${item.trabajo||'—'}</td>
+      <td>${fmtPeso(item.monto)}</td>
+      <td style="color:var(--amber)">${item.senia?fmtPeso(item.senia):'—'}</td>
+      <td style="color:${(item.saldo||0)>0?'var(--green)':'var(--muted)'}">${(item.saldo||0)>0?fmtPeso(item.saldo):'—'}</td>
+      <td><span class="badge badge-${est.toLowerCase()}">${estTxt}</span></td>
+      <td style="color:var(--muted)">${fmtFecha(item.fechaEntrega)}</td>
+      <td><div class="td-actions">
+        <button class="btn btn-sm btn-wa" onclick='abrirWA(${safeItem})'>WA</button>
+        <button class="btn btn-sm btn-edit" onclick="editTrabajo(${item.id})">✏️</button>
+        <button class="btn btn-sm btn-del" onclick="delTrabajo(${item.id})">✕</button>
+      </div></td>
+    </tr>`;
+  }).join('')+'</tbody></table>';
+}
+
+async function editTrabajo(id){
+  const item=await dbGet('trabajos',id);
+  editTrabajoId=id;
+  document.getElementById('et-cliente').value=item.cliente||'';
+  document.getElementById('et-whatsapp').value=item.whatsapp||'';
+  document.getElementById('et-equipo').value=item.equipo||'';
+  document.getElementById('et-trabajo').value=item.trabajo||'';
+  document.getElementById('et-estado').value=item.estado||'Pendiente';
+  document.getElementById('et-monto').value=item.monto||'';
+  document.getElementById('et-senia').value=item.senia||'';
+  document.getElementById('et-fechaEntrega').value=item.fechaEntrega||'';
+  document.getElementById('et-notas').value=item.notas||'';
+  calcSaldo('et');
+  // Mostrar aviso si hay saldo pendiente
+  const aviso=document.getElementById('et-caja-aviso');
+  if(aviso && item.estado!=='Listo' && (item.saldo||0)>0){
+    aviso.style.display='block';
+    aviso.textContent=`ℹ Si cambiás el estado a "Listo", el saldo de ${fmtPeso(item.saldo)} se registrará automáticamente en Caja.`;
+  } else if(aviso){
+    aviso.style.display='none';
+  }
+  openModal('modal-trabajo');
+}
+
+// Actualizar aviso al cambiar estado en modal
+document.getElementById('et-estado').addEventListener('change', function(){
+  calcSaldo('et');
+  const aviso=document.getElementById('et-caja-aviso');
+  const monto=parseFloat(document.getElementById('et-monto').value)||0;
+  const senia=parseFloat(document.getElementById('et-senia').value)||0;
+  const saldo=monto-senia;
+  if(aviso && this.value==='Listo' && saldo>0){
+    aviso.style.display='block';
+    aviso.textContent=`✓ Al guardar como "Listo" se registrará ${fmtPeso(saldo)} como ingreso en Caja automáticamente.`;
+  } else if(aviso){
+    aviso.style.display='none';
+  }
+});
+
+async function updateTrabajo(){
+  if(!editTrabajoId)return;
+  const item=await dbGet('trabajos',editTrabajoId);
+  const estadoAnterior=item.estado;
+  const monto=parseFloat(document.getElementById('et-monto').value)||0;
+  const senia=parseFloat(document.getElementById('et-senia').value)||0;
+  const saldo=monto-senia;
+  const nuevoEstado=document.getElementById('et-estado').value;
+
+  Object.assign(item,{
+    cliente:document.getElementById('et-cliente').value.trim(),
+    whatsapp:document.getElementById('et-whatsapp').value.trim(),
+    equipo:document.getElementById('et-equipo').value.trim(),
+    trabajo:document.getElementById('et-trabajo').value.trim(),
+    estado:nuevoEstado,monto,senia,saldo,
+    fechaEntrega:document.getElementById('et-fechaEntrega').value,
+    notas:document.getElementById('et-notas').value.trim()
+  });
+  await dbPut('trabajos',item);
+
+  // ✅ AUTO-CAJA: Si cambia a Listo y hay saldo → ingreso automático
+  if(nuevoEstado==='Listo' && estadoAnterior!=='Listo' && saldo>0){
+    await dbAdd('caja',{
+      tipo:'ingreso',
+      monto:saldo,
+      categoria:'Trabajo',
+      descripcion:`Cobro final — ${item.cliente} · ${item.equipo||'equipo'}`,
+      fecha:today(),
+      auto:true,
+      trabajoId:editTrabajoId
+    });
+    closeModal('modal-trabajo');
+    toast(`✅ Listo · Saldo ${fmtPeso(saldo)} registrado en Caja`);
+
+  // 🔄 REVERTIR: Si vuelve de Listo a Pendiente/Taller → eliminar el ingreso de caja
+  } else if(estadoAnterior==='Listo' && nuevoEstado!=='Listo'){
+    const todaCaja=await dbGetAll('caja');
+    const movAEliminar=todaCaja.filter(c=>c.auto && c.trabajoId===editTrabajoId && c.categoria==='Trabajo');
+    for(const mov of movAEliminar) await dbDelete('caja',mov.id);
+    closeModal('modal-trabajo');
+    const msg=movAEliminar.length>0
+      ? `🔄 Revertido · Ingreso de ${fmtPeso(movAEliminar.reduce((a,b)=>a+b.monto,0))} eliminado de Caja`
+      : '🔄 Trabajo revertido a '+nuevoEstado;
+    toast(msg);
+
+  } else {
+    closeModal('modal-trabajo');
+    toast('✅ Trabajo actualizado');
+  }
+  renderTrabajos();
+}
+
+async function delTrabajo(id){if(!confirm('¿Eliminar este trabajo?'))return;await dbDelete('trabajos',id);toast('🗑️ Eliminado');renderTrabajos()}
+
+// ── REPUESTOS ──
+let editRepuestoId=null;
+async function guardarRepuesto(){const nombre=document.getElementById('r-nombre').value.trim();if(!nombre){toast('Ingresá el nombre',true);return}const data={nombre,cantidad:parseInt(document.getElementById('r-cantidad').value)||0,proveedor:document.getElementById('r-proveedor').value.trim(),precioCompra:parseFloat(document.getElementById('r-precioCompra').value)||0,precioVenta:parseFloat(document.getElementById('r-precioVenta').value)||0,descripcion:document.getElementById('r-descripcion').value.trim(),fechaIngreso:today()};await dbAdd('repuestos',data);['r-nombre','r-cantidad','r-proveedor','r-precioCompra','r-precioVenta','r-descripcion'].forEach(id=>document.getElementById(id).value='');toast('✅ Repuesto agregado');renderRepuestos()}
+async function renderRepuestos(){const q=document.getElementById('buscar-repuestos').value;let data=await dbGetAll('repuestos');data=filter(data,q,['nombre','proveedor','descripcion']).reverse();const totalU=data.reduce((a,b)=>a+(b.cantidad||0),0),valStock=data.reduce((a,b)=>a+(b.cantidad||0)*(b.precioCompra||0),0),bajo=data.filter(d=>(d.cantidad||0)<=2).length;document.getElementById('stats-repuestos').innerHTML=`<div class="stat-card"><div class="stat-val stat-primary">${data.length}</div><div class="stat-label">TIPOS</div></div><div class="stat-card"><div class="stat-val stat-cyan">${totalU}</div><div class="stat-label">UNIDADES</div></div><div class="stat-card"><div class="stat-val stat-amber">${bajo}</div><div class="stat-label">STOCK BAJO</div></div><div class="stat-card"><div class="stat-val stat-green">${fmtPeso(valStock)}</div><div class="stat-label">VALOR STOCK</div></div>`;const wrap=document.getElementById('tabla-repuestos');if(!data.length){wrap.innerHTML=emptyState('SIN REPUESTOS');return}wrap.innerHTML='<table><thead><tr><th>NOMBRE</th><th>CANTIDAD</th><th>PROVEEDOR</th><th>P. COMPRA</th><th>P. VENTA</th><th>MARGEN</th><th>DESCRIPCIÓN</th><th>ACCIONES</th></tr></thead><tbody>'+data.map(item=>{const m=item.precioVenta-item.precioCompra,sc=(item.cantidad||0)<=2?'var(--red)':(item.cantidad<=5?'var(--amber)':'var(--green)');return `<tr><td style="color:#fff;font-weight:800">${item.nombre}</td><td style="color:${sc};font-weight:800">${item.cantidad}</td><td style="color:var(--muted)">${item.proveedor||'—'}</td><td>${fmtPeso(item.precioCompra)}</td><td style="color:var(--cyan)">${fmtPeso(item.precioVenta)}</td><td style="color:${m>0?'var(--green)':'var(--red)'}">${fmtPeso(m)}</td><td style="color:var(--muted)">${item.descripcion||'—'}</td><td><div class="td-actions"><button class="btn btn-sm btn-edit" onclick="editRepuesto(${item.id})">✏️</button><button class="btn btn-sm btn-del" onclick="delRepuesto(${item.id})">✕</button></div></td></tr>`;}).join('')+'</tbody></table>'}
+async function editRepuesto(id){const item=await dbGet('repuestos',id);editRepuestoId=id;document.getElementById('er-nombre').value=item.nombre||'';document.getElementById('er-cantidad').value=item.cantidad||'';document.getElementById('er-proveedor').value=item.proveedor||'';document.getElementById('er-precioCompra').value=item.precioCompra||'';document.getElementById('er-precioVenta').value=item.precioVenta||'';document.getElementById('er-descripcion').value=item.descripcion||'';openModal('modal-repuesto')}
+async function updateRepuesto(){if(!editRepuestoId)return;const item=await dbGet('repuestos',editRepuestoId);Object.assign(item,{nombre:document.getElementById('er-nombre').value.trim(),cantidad:parseInt(document.getElementById('er-cantidad').value)||0,proveedor:document.getElementById('er-proveedor').value.trim(),precioCompra:parseFloat(document.getElementById('er-precioCompra').value)||0,precioVenta:parseFloat(document.getElementById('er-precioVenta').value)||0,descripcion:document.getElementById('er-descripcion').value.trim()});await dbPut('repuestos',item);closeModal('modal-repuesto');toast('✅ Actualizado');renderRepuestos()}
+async function delRepuesto(id){if(!confirm('¿Eliminar?'))return;await dbDelete('repuestos',id);toast('🗑️ Eliminado');renderRepuestos()}
+
+// ── CAJA ──
+let editCajaId=null;
+async function guardarCaja(){const monto=parseFloat(document.getElementById('c-monto').value);if(!monto){toast('Ingresá un monto',true);return}const data={tipo:document.getElementById('c-tipo').value,monto,categoria:document.getElementById('c-categoria').value,descripcion:document.getElementById('c-descripcion').value.trim(),fecha:document.getElementById('c-fecha').value||today(),auto:false};await dbAdd('caja',data);['c-monto','c-descripcion','c-fecha'].forEach(id=>document.getElementById(id).value='');toast('✅ Movimiento registrado');renderCaja()}
+async function renderCaja(){
+  const q=document.getElementById('buscar-caja').value;
+  let data=await dbGetAll('caja');
+  data=filter(data,q,['descripcion','categoria','tipo']).reverse();
+  const ing=data.filter(d=>d.tipo==='ingreso').reduce((a,b)=>a+b.monto,0);
+  const eg=data.filter(d=>d.tipo==='egreso').reduce((a,b)=>a+b.monto,0);
+  const bal=ing-eg;
+  document.getElementById('stats-caja').innerHTML=`
+    <div class="stat-card"><div class="stat-val stat-green">${fmtPeso(ing)}</div><div class="stat-label">INGRESOS</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--red)">${fmtPeso(eg)}</div><div class="stat-label">EGRESOS</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:${bal>=0?'var(--cyan)':'var(--red)'}">${fmtPeso(Math.abs(bal))}</div><div class="stat-label">BALANCE ${bal>=0?'POSITIVO':'NEGATIVO'}</div></div>
+    <div class="stat-card"><div class="stat-val stat-primary">${data.length}</div><div class="stat-label">MOVIMIENTOS</div></div>`;
+  const wrap=document.getElementById('tabla-caja');
+  if(!data.length){wrap.innerHTML=emptyState('SIN MOVIMIENTOS');return}
+  wrap.innerHTML='<table><thead><tr><th>TIPO</th><th>MONTO</th><th>CATEGORÍA</th><th>DESCRIPCIÓN</th><th>FECHA</th><th>ACCIONES</th></tr></thead><tbody>'+
+  data.map(item=>`<tr>
+    <td><span class="badge badge-${item.tipo}">${item.tipo.toUpperCase()}</span>${item.auto?'<span class="caja-auto">AUTO</span>':''}</td>
+    <td style="color:${item.tipo==='ingreso'?'var(--green)':'var(--red)'};font-weight:800">${fmtPeso(item.monto)}</td>
+    <td style="color:var(--muted)">${item.categoria}</td>
+    <td>${item.descripcion||'—'}</td>
+    <td style="color:var(--muted)">${fmtFecha(item.fecha)}</td>
+    <td><div class="td-actions">
+      <button class="btn btn-sm btn-edit" onclick="editCaja(${item.id})">✏️</button>
+      <button class="btn btn-sm btn-del" onclick="delCaja(${item.id})">✕</button>
+    </div></td>
+  </tr>`).join('')+'</tbody></table>';
+}
+async function editCaja(id){const item=await dbGet('caja',id);editCajaId=id;document.getElementById('ec-tipo').value=item.tipo||'ingreso';document.getElementById('ec-monto').value=item.monto||'';document.getElementById('ec-categoria').value=item.categoria||'Otro';document.getElementById('ec-descripcion').value=item.descripcion||'';document.getElementById('ec-fecha').value=item.fecha||'';openModal('modal-caja')}
+async function updateCaja(){if(!editCajaId)return;const item=await dbGet('caja',editCajaId);Object.assign(item,{tipo:document.getElementById('ec-tipo').value,monto:parseFloat(document.getElementById('ec-monto').value)||0,categoria:document.getElementById('ec-categoria').value,descripcion:document.getElementById('ec-descripcion').value.trim(),fecha:document.getElementById('ec-fecha').value});await dbPut('caja',item);closeModal('modal-caja');toast('✅ Actualizado');renderCaja()}
+async function delCaja(id){if(!confirm('¿Eliminar?'))return;await dbDelete('caja',id);toast('🗑️ Eliminado');renderCaja()}
+
+// ── PROVEEDORES ──
+let editProveedorId=null;
+async function guardarProveedor(){const nombre=document.getElementById('p-nombre').value.trim();if(!nombre){toast('Ingresá el nombre',true);return}const data={nombre,whatsapp:document.getElementById('p-whatsapp').value.trim(),email:document.getElementById('p-email').value.trim(),direccion:document.getElementById('p-direccion').value.trim(),notas:document.getElementById('p-notas').value.trim()};await dbAdd('proveedores',data);['p-nombre','p-whatsapp','p-email','p-direccion','p-notas'].forEach(id=>document.getElementById(id).value='');toast('✅ Proveedor guardado');renderProveedores()}
+async function renderProveedores(){const q=document.getElementById('buscar-proveedores').value;let data=await dbGetAll('proveedores');data=filter(data,q,['nombre','email','direccion']).reverse();const wrap=document.getElementById('tabla-proveedores');if(!data.length){wrap.innerHTML=emptyState('SIN PROVEEDORES');return}wrap.innerHTML='<table><thead><tr><th>NOMBRE</th><th>WHATSAPP</th><th>EMAIL</th><th>DIRECCIÓN</th><th>NOTAS</th><th>ACCIONES</th></tr></thead><tbody>'+data.map(item=>`<tr><td style="color:#fff;font-weight:800">${item.nombre}</td><td style="color:var(--cyan)">${item.whatsapp||'—'}</td><td style="color:var(--muted)">${item.email||'—'}</td><td style="color:var(--muted)">${item.direccion||'—'}</td><td style="color:var(--muted);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.notas||'—'}</td><td><div class="td-actions">${item.whatsapp?`<button class="btn btn-sm btn-wa" onclick='abrirWA(${JSON.stringify(item).replace(/'/g,"&#39;")})'>WA</button>`:''}<button class="btn btn-sm btn-edit" onclick="editProveedor(${item.id})">✏️</button><button class="btn btn-sm btn-del" onclick="delProveedor(${item.id})">✕</button></div></td></tr>`).join('')+'</tbody></table>'}
+async function editProveedor(id){const item=await dbGet('proveedores',id);editProveedorId=id;document.getElementById('ep-nombre').value=item.nombre||'';document.getElementById('ep-whatsapp').value=item.whatsapp||'';document.getElementById('ep-email').value=item.email||'';document.getElementById('ep-direccion').value=item.direccion||'';document.getElementById('ep-notas').value=item.notas||'';openModal('modal-proveedor')}
+async function updateProveedor(){if(!editProveedorId)return;const item=await dbGet('proveedores',editProveedorId);Object.assign(item,{nombre:document.getElementById('ep-nombre').value.trim(),whatsapp:document.getElementById('ep-whatsapp').value.trim(),email:document.getElementById('ep-email').value.trim(),direccion:document.getElementById('ep-direccion').value.trim(),notas:document.getElementById('ep-notas').value.trim()});await dbPut('proveedores',item);closeModal('modal-proveedor');toast('✅ Actualizado');renderProveedores()}
+async function delProveedor(id){if(!confirm('¿Eliminar?'))return;await dbDelete('proveedores',id);toast('🗑️ Eliminado');renderProveedores()}
+
+// ── PRESUPUESTOS ──
+let editPresupuestoId=null;
+async function guardarPresupuesto(){const cliente=document.getElementById('pre-cliente').value.trim();if(!cliente){toast('Ingresá el nombre',true);return}const data={cliente,whatsapp:document.getElementById('pre-whatsapp').value.trim(),equipo:document.getElementById('pre-equipo').value.trim(),descripcion:document.getElementById('pre-descripcion').value.trim(),monto:parseFloat(document.getElementById('pre-monto').value)||0,estado:document.getElementById('pre-estado').value,fecha:document.getElementById('pre-fecha').value||today()};await dbAdd('presupuestos',data);['pre-cliente','pre-whatsapp','pre-equipo','pre-descripcion','pre-monto','pre-fecha'].forEach(id=>document.getElementById(id).value='');toast('✅ Presupuesto guardado');renderPresupuestos()}
+async function renderPresupuestos(){const q=document.getElementById('buscar-presupuestos').value;let data=await dbGetAll('presupuestos');data=filter(data,q,['cliente','equipo','descripcion','estado']).reverse();const aprob=data.filter(d=>d.estado==='Aprobado').length,esp=data.filter(d=>d.estado==='Espera').length,montoAp=data.filter(d=>d.estado==='Aprobado').reduce((a,b)=>a+b.monto,0);document.getElementById('stats-presupuestos').innerHTML=`<div class="stat-card"><div class="stat-val stat-primary">${data.length}</div><div class="stat-label">TOTAL</div></div><div class="stat-card"><div class="stat-val stat-amber">${esp}</div><div class="stat-label">EN ESPERA</div></div><div class="stat-card"><div class="stat-val stat-cyan">${aprob}</div><div class="stat-label">APROBADOS</div></div><div class="stat-card"><div class="stat-val stat-green">${fmtPeso(montoAp)}</div><div class="stat-label">MONTO APROBADO</div></div>`;const wrap=document.getElementById('tabla-presupuestos');if(!data.length){wrap.innerHTML=emptyState('SIN PRESUPUESTOS');return}wrap.innerHTML='<table><thead><tr><th>CLIENTE</th><th>EQUIPO</th><th>DESCRIPCIÓN</th><th>MONTO</th><th>ESTADO</th><th>FECHA</th><th>ACCIONES</th></tr></thead><tbody>'+data.map(item=>{const safeItem=JSON.stringify(item).replace(/'/g,"&#39;");return `<tr><td style="color:#fff;font-weight:800">${item.cliente}</td><td style="color:var(--cyan)">${item.equipo||'—'}</td><td style="color:var(--muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.descripcion||'—'}</td><td>${fmtPeso(item.monto)}</td><td><span class="badge badge-${item.estado.toLowerCase()}">${item.estado.toUpperCase()}</span></td><td style="color:var(--muted)">${fmtFecha(item.fecha)}</td><td><div class="td-actions"><button class="btn btn-sm btn-wa" onclick='abrirWA(${safeItem},"presupuesto")'>WA</button><button class="btn btn-sm btn-edit" onclick="editPresupuesto(${item.id})">✏️</button><button class="btn btn-sm btn-del" onclick="delPresupuesto(${item.id})">✕</button></div></td></tr>`;}).join('')+'</tbody></table>'}
+async function editPresupuesto(id){const item=await dbGet('presupuestos',id);editPresupuestoId=id;document.getElementById('epre-cliente').value=item.cliente||'';document.getElementById('epre-whatsapp').value=item.whatsapp||'';document.getElementById('epre-equipo').value=item.equipo||'';document.getElementById('epre-descripcion').value=item.descripcion||'';document.getElementById('epre-monto').value=item.monto||'';document.getElementById('epre-estado').value=item.estado||'Espera';document.getElementById('epre-fecha').value=item.fecha||'';openModal('modal-presupuesto')}
+async function updatePresupuesto(){if(!editPresupuestoId)return;const item=await dbGet('presupuestos',editPresupuestoId);Object.assign(item,{cliente:document.getElementById('epre-cliente').value.trim(),whatsapp:document.getElementById('epre-whatsapp').value.trim(),equipo:document.getElementById('epre-equipo').value.trim(),descripcion:document.getElementById('epre-descripcion').value.trim(),monto:parseFloat(document.getElementById('epre-monto').value)||0,estado:document.getElementById('epre-estado').value,fecha:document.getElementById('epre-fecha').value});await dbPut('presupuestos',item);closeModal('modal-presupuesto');toast('✅ Actualizado');renderPresupuestos()}
+async function delPresupuesto(id){if(!confirm('¿Eliminar?'))return;await dbDelete('presupuestos',id);toast('🗑️ Eliminado');renderPresupuestos()}
+
+initDB().then(()=>{document.getElementById('dbStatus').textContent='Base de datos local activa';renderTrabajos()}).catch(()=>{document.getElementById('dbStatus').textContent='Error de base de datos';document.querySelector('.db-dot').style.background='var(--red)'});
+
+// ── EXPORTAR ──
+async function exportarDatos(){
+  try {
+    const stores = ['trabajos','repuestos','caja','proveedores','presupuestos'];
+    const backup = { version: '2.1', fecha: new Date().toISOString(), datos: {} };
+    for(const s of stores) backup.datos[s] = await dbGetAll(s);
+    const total = Object.values(backup.datos).reduce((a,b)=>a+b.length,0);
+    const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const fecha = new Date().toISOString().split('T')[0];
+    a.href = url;
+    a.download = `SS-Gestion-backup-${fecha}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast(`✅ Exportado · ${total} registros guardados`);
+  } catch(e) {
+    toast('Error al exportar', true);
+  }
+}
+
+// ── IMPORTAR ──
+async function importarDatos(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  try {
+    const text = await file.text();
+    const backup = JSON.parse(text);
+    if(!backup.datos) { toast('Archivo inválido', true); return; }
+    const stores = ['trabajos','repuestos','caja','proveedores','presupuestos'];
+    let total = 0;
+    const confirmar = confirm(`¿Importar backup del ${backup.fecha ? backup.fecha.split('T')[0] : 'archivo'}?\n\nEsto AGREGA los datos al existente sin borrar nada.`);
+    if(!confirmar) return;
+    for(const s of stores){
+      if(!backup.datos[s]) continue;
+      for(const item of backup.datos[s]){
+        const {id, ...sinId} = item; // quitar el id para que no haya conflictos
+        await dbAdd(s, sinId);
+        total++;
+      }
+    }
+    toast(`✅ Importado · ${total} registros cargados`);
+    renderTrabajos();
+  } catch(e) {
+    toast('Error al importar: archivo corrupto', true);
+  }
+  event.target.value = ''; // reset input
+}
+
+// ── PWA: Manifest dinámico ──
+(function(){
+  const manifest = {
+    name: "SS Gestión Pro",
+    short_name: "SS Gestión",
+    description: "Sistema de gestión para System Solutions",
+    start_url: "./",
+    display: "standalone",
+    background_color: "#03050a",
+    theme_color: "#03050a",
+    orientation: "portrait-primary",
+    icons: [
+      { src: "https://fernandoercoli.github.io/SoporteTecnico/favicon.png", sizes: "192x192", type: "image/png" },
+      { src: "https://fernandoercoli.github.io/SoporteTecnico/favicon.png", sizes: "512x512", type: "image/png" }
+    ]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  document.getElementById('pwa-manifest').setAttribute('href', url);
+})();
+
+// ── PWA: Service Worker ──
+if('serviceWorker' in navigator){
+  const swCode = `
+    const CACHE = 'ss-gestion-v1';
+    const ASSETS = ['./', './index.html'];
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(()=>{}));
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', e => {
+      if(e.request.method !== 'GET') return;
+      e.respondWith(
+        fetch(e.request).catch(() => caches.match(e.request))
+      );
+    });
+  `;
+  const swBlob = new Blob([swCode], {type:'text/javascript'});
+  const swUrl = URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swUrl).then(()=>{
+    console.log('SW registrado');
+  }).catch(()=>{});
+}
+
+// ── PWA: Botón instalar ──
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Mostrar botón en sidebar footer
+  const footer = document.querySelector('.sidebar-footer');
+  if(footer){
+    const btn = document.createElement('button');
+    btn.innerHTML = '📲 Instalar App';
+    btn.style.cssText = 'background:var(--primary);color:#000;border:none;padding:8px 12px;border-radius:6px;font-family:inherit;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;width:100%;margin-top:10px';
+    btn.onclick = async () => {
+      if(!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const {outcome} = await deferredPrompt.userChoice;
+      if(outcome==='accepted') btn.remove();
+      deferredPrompt = null;
+    };
+    footer.appendChild(btn);
+  }
+});
+</script>
+</body>
+</html>
