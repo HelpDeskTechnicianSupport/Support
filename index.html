@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init({ publicKey: "4LtzdClsP0HtlRLcd" });
+</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-B5VM6L076F"></script>
 <script>
@@ -13,7 +17,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>SystemSolutions — Soporte Técnico Premium</title>
 <!-- ENLACE ABSOLUTO E INFALIBLE PARA EL FAVICON -->
-<link rel="icon" type="image/png" href="https://systemsolutionshelpdesk.github.io/SoporteTecnico/favicon.png">
+<link rel="icon" type="image/png" href="https://fernandoercoli.github.io/SoporteTecnico/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -129,7 +133,6 @@ section{padding:100px 5vw}
 #nosotros{background:var(--surface);position:relative;overflow:hidden}
 #nosotros::before{content:'';position:absolute;top:-300px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(74,240,255,0.04) 0%,transparent 70%);pointer-events:none}
 .nosotros-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.nosotros-left
 .nosotros-left .sec-title{margin-bottom:24px}
 .nosotros-story{font-family:'Outfit',sans-serif;font-weight:300;font-size:.95rem;color:var(--muted);line-height:1.9;margin-bottom:20px}
 .nosotros-story strong{color:var(--text);font-weight:600}
@@ -139,7 +142,6 @@ section{padding:100px 5vw}
 .value-ico{font-size:1.2rem;margin-bottom:8px}
 .value-title{font-size:.75rem;font-weight:700;letter-spacing:1px;color:var(--text);margin-bottom:4px}
 .value-desc{font-size:.72rem;color:var(--muted);font-family:'Outfit',sans-serif;font-weight:300;line-height:1.5}
-.nosotros-right
 .team-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;transition:border-color .2s,transform .2s}
 .team-card:hover{border-color:rgba(124,109,250,0.4);transform:translateX(6px)}
 .team-card-inner{display:flex;align-items:center;gap:20px;padding:24px 28px}
@@ -795,11 +797,11 @@ footer p{font-size:.68rem;color:var(--muted);letter-spacing:.5px}
     <p class="sec-sub" style="margin-top:16px">Escribinos y te respondemos en menos de una hora. El diagnóstico siempre es sin costo.</p>
     <div class="contact-items">
       <a href="https://wa.me/5491130279205" target="_blank" class="c-item">
-        <div class="c-icon">💬</div>
+       <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 20px; height: 20px; margin-right: 8px;">
         <div><div class="c-label">WhatsApp</div><div class="c-val">+54 9 11 3027-9205</div></div>
       </a>
       <a href="mailto:systemsolutions.helpdesk@gmail.com" class="c-item">
-        <div class="c-icon">✉️</div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">
         <div><div class="c-label">Email</div><div class="c-val">systemsolutions.helpdesk@gmail.com</div></div>
       </a>
       <div class="c-item" style="cursor:default">
@@ -827,32 +829,6 @@ footer p{font-size:.68rem;color:var(--muted);letter-spacing:.5px}
     </p>
   </div>
 </section>
-
-<!-- CHATBOT -->
-<button class="chat-bubble" id="chatBubble" onclick="toggleChat()" title="Chat con nosotros">
-  👨‍💻<span class="chat-badge"></span>
-</button>
-<div class="chat-window" id="chatWindow">
-  <div class="chat-header">
-    <div class="chat-avatar">SS</div>
-    <div class="chat-header-info">
-      <div class="chat-header-name">SystemSolutions Bot</div>
-      <div class="chat-header-status">● En línea ahora</div>
-    </div>
-    <button class="chat-close-btn" onclick="toggleChat()">✕</button>
-  </div>
-  <div class="chat-messages" id="chatMessages"></div>
-  <div class="chat-suggestions" id="chatSuggestions">
-    <button class="chat-sug-btn" onclick="sendSuggestion('¿Cuáles son sus servicios?')">Servicios</button>
-    <button class="chat-sug-btn" onclick="sendSuggestion('¿Cuánto cuesta el diagnóstico?')">Precios</button>
-    <button class="chat-sug-btn" onclick="sendSuggestion('¿Hacen soporte a domicilio?')">Domicilio</button>
-    <button class="chat-sug-btn" onclick="sendSuggestion('¿Cómo los contacto?')">Contacto</button>
-  </div>
-  <div class="chat-footer">
-    <textarea class="chat-input" id="chatInput" placeholder="Escribí tu consulta..." rows="1" onkeydown="chatKeydown(event)" oninput="autoResize(this)"></textarea>
-    <button class="chat-send" id="chatSendBtn" onclick="sendChatMessage()">➤</button>
-  </div>
-</div>
 
 <!-- MODAL CONSULTAR -->
 <div class="modal-overlay" id="consultarModal">
@@ -887,7 +863,7 @@ footer p{font-size:.68rem;color:var(--muted);letter-spacing:.5px}
           <textarea id="mMensaje" rows="4" placeholder="Contanos más detalles (opcional)..."></textarea>
         </div>
       </div>
-      <button class="modal-send" onclick="enviarConsulta()">Enviar consulta →</button>
+   <button class="modal-send" onclick="enviarConsulta()">Enviar consulta →</button>
     </div>
     <div class="modal-success" id="modalSuccess">
       <div class="ok-ico">✅</div>
@@ -905,195 +881,387 @@ footer p{font-size:.68rem;color:var(--muted);letter-spacing:.5px}
   <p>© 2026 SystemSolutions · Soporte Técnico Profesional · Buenos Aires</p>
   <p style="color:var(--primary);font-family:'JetBrains Mono',monospace;font-size:.65rem">STATUS: ONLINE ●</p>
 </footer>
+<!-- CHATBOT BUBBLE -->
+<button class="chat-bubble" id="chatBubble" onclick="toggleChat()" title="Chat con nosotros">
+  🤖<span class="chat-badge"></span>
+</button>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!-- CHAT WINDOW -->
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-avatar">SS</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Terabyte · SystemSolutions</div>
+      <div class="chat-header-status">● En línea ahora</div>
+    </div>
+    <button class="chat-close-btn" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-footer">
+    <textarea class="chat-input" id="chatInput" placeholder="Escribí tu respuesta..." rows="1"
+      onkeydown="chatKeydown(event)" oninput="autoResize(this)"></textarea>
+    <button class="chat-send" id="chatSendBtn" onclick="sendUserText()">➤</button>
+  </div>
+</div>
+
 <script>
-emailjs.init('4LtzdClsP0HtlRLcd');
-const cursor=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
-let mx=0,my=0,tx=0,ty=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-6)+'px';cursor.style.top=(my-6)+'px'});
-setInterval(()=>{tx+=(mx-tx)*.18;ty+=(my-ty)*.18;trail.style.left=(tx-2)+'px';trail.style.top=(ty-2)+'px'},16);
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2)';cursor.style.background='rgba(124,109,250,0.2)'});
-  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';cursor.style.background='transparent'});
-});
-const lines=[
-  {type:'cmd',text:'./diagnose --full --device="Mi PC"'},
-  {type:'out',text:'Iniciando análisis del sistema...'},
-  {type:'out',text:'Escaneando hardware............'},
-  {type:'ok',text:'✓ CPU: Intel Core i5 — OK'},
-  {type:'ok',text:'✓ RAM: 16GB DDR4 — OK'},
-  {type:'warn',text:'! SSD: Vida útil 12% — Crítico'},
-  {type:'err',text:'✗ Error de Sistema: Archivos corruptos'},
-  {type:'out',text:'Generando presupuesto...'},
-  {type:'cmd',text:'./contact --whatsapp'},
-];
-const termBody=document.getElementById('termBody');
-let lineIdx=0;
-function typeLine(){
-  if(lineIdx>=lines.length)return;
-  const line=lines[lineIdx],div=document.createElement('div');
-  div.className='t-line';
-  if(line.type==='cmd'){
-    div.innerHTML=`<span class="t-prompt">$</span><span class="t-cmd"></span>`;
-    termBody.appendChild(div);
-    typeText(div.querySelector('.t-cmd'),line.text,()=>{lineIdx++;setTimeout(typeLine,600)});
-  } else {
-    div.innerHTML=`<span class="t-${line.type}">${line.text}</span>`;
-    termBody.appendChild(div);lineIdx++;setTimeout(typeLine,400);
-  }
-  termBody.scrollTop=termBody.scrollHeight;
-}
-function typeText(el,text,cb){let i=0;const iv=setInterval(()=>{el.textContent+=text[i];i++;if(i>=text.length){clearInterval(iv);cb()}},40)}
-setTimeout(typeLine,1000);
-// ── CHATBOT ──
-const SYSTEM_PROMPT = `Soy Terabyte el asistente virtual de SystemSolutions, un servicio técnico informático premium ubicado en Buenos Aires (CABA y Gran Buenos Aires), Argentina.
-
-INFORMACIÓN DEL NEGOCIO:
-- Fundador: Fernando E., +15 años de experiencia en hardware, software y redes
-- Especialidades: recuperación de datos, armado de PCs gamer, soporte remoto
-- Clientes: hogares y PyMEs
-- Cobertura: CABA y Gran Buenos Aires
-- Garantía: 30 días en todos los trabajos
-- Respuesta: menos de una hora, reparación en el día en la mayoría de casos
-
-SERVICIOS:
-1. Diagnóstico Completo — GRATIS, sin cobros innecesarios
-2. Recuperación de Datos — discos dañados, archivos eliminados, formateos accidentales
-3. Eliminación de Virus — malware, ransomware, adware, limpieza profunda
-4. Optimización Total — PC lenta, limpieza interna, thermal paste, SSD, SO
-5. Software & Windows — instalación Windows, Office, drivers, antivirus
-6. Redes & Conectividad — Wi-Fi, redes locales, VPN, routers
-7. Armado de PCs Gamer — selección de componentes por presupuesto
-8. Soporte Remoto — sin salir de casa, configuraciones y optimización
-9. Mantenimiento Preventivo — para empresas y hogares
-10. Recuperación de contraseñas y cuentas
-
-VALORES:
-- Diagnóstico honesto: nunca inventamos problemas
-- Privacidad garantizada: no accedemos a archivos innecesarios
-- Trato humano y personalizado
-
-CONTACTO:
-- WhatsApp: +54 9 11 3027-9205
-- Email: systemsolutions_helpdesk@gmail.com
-- Web: https://systemsolutionshelpdesk.github.io/SoporteTecnico/
-
-INSTRUCCIONES:
-- Respondé siempre en español, de forma amigable, breve y directa
-- Si te preguntan por precios específicos, decí que depende del diagnóstico y que el diagnóstico es GRATIS
-- Si el usuario quiere hacer una consulta formal, invitalo a usar el formulario de la web o el WhatsApp
-- No inventes información que no tenés
-- Máximo 3-4 oraciones por respuesta
-- Usá emojis con moderación`;
-
-let chatHistory = [];
+// ══════════════════════════════════════════════
+//  ESTADO DEL CHAT
+// ══════════════════════════════════════════════
 let chatInitialized = false;
+let chatStep = 'start';   // start | menu | service_confirm | ask_name | done
+let selectedService = null;
+let userName = '';
 
-function toggleChat(){
-  const win = document.getElementById('chatWindow');
-  win.classList.toggle('chat-open');
-  if(win.classList.contains('chat-open') && !chatInitialized){
-    chatInitialized = true;
-    document.getElementById('chatBubble').querySelector('.chat-badge').style.display='none';
-    addBotMessage('¡Hola! 👋 Soy Terabyte, el asistente de **SystemSolutions**. ¿En qué te puedo ayudar hoy?');
-  }
-  if(win.classList.contains('chat-open')) setTimeout(()=>document.getElementById('chatInput').focus(),300);
-}
+const SERVICIOS = [
+  { id: 1, label: '🛡️ Eliminación de Virus',       msg: '¡Entendido! Vamos a desinfectar tu equipo. ¿Querés que te derivemos al instante con un técnico especialista?' },
+  { id: 2, label: '💾 Recuperación de Datos',       msg: 'La pérdida de datos puede ser crítica. No uses el equipo para no sobreescribir nada. ¿Querés hablar con un técnico ahora mismo?' },
+  { id: 3, label: '🖥️ Instalación en general',      msg: '¡Buenísimo! Te ayudamos a instalar sistemas operativos, programas de diseño, Office y lo que necesites. ¿Te pasamos con un técnico para coordinar?' },
+  { id: 4, label: '⚡ Upgrade / Mejoras de equipo', msg: '¡Ideal para darle una segunda vida a tu computadora! Podemos sumar SSD, más RAM o mejorar componentes. ¿Querés hablar con un especialista?' },
+  { id: 5, label: '🌐 Redes y Conectividad',        msg: '¡Entendido! Te ayudamos con Wi-Fi lento, configuración de routers, cableado y repetidores. ¿Querés que te atienda un técnico en redes ahora?' },
+  { id: 6, label: '🏢 Soporte a Empresas',          msg: 'Ofrecemos abonos mensuales y mantenimiento preventivo para que tu negocio nunca falle. ¿Te gustaría hablar con un asesor?' },
+  { id: 7, label: '🎮 PCs Gamer',                   msg: '¡El rincón de los gamers! Armamos PCs a medida, optimizamos rendimiento y solucionamos problemas de temperatura. ¿Querés que un técnico arme tu presupuesto?' },
+  { id: 8, label: '❓ Otras consultas',             msg: '' },
+];
 
-function addBotMessage(text){
+// ══════════════════════════════════════════════
+//  HELPERS DE UI
+// ══════════════════════════════════════════════
+function scrollBottom() {
   const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.className = 'chat-msg bot';
-  div.innerHTML = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
-  msgs.appendChild(div);
-
-  // Mostrar botones de contacto si el bot menciona WhatsApp o contacto
-  const lower = text.toLowerCase();
-  if(lower.includes('whatsapp') || lower.includes('contacto') || lower.includes('escribinos') || lower.includes('comunicarte')){
-    const btns = document.createElement('div');
-    btns.style.cssText = 'display:flex;gap:8px;margin-top:6px;flex-wrap:wrap';
-    btns.innerHTML = `
-      <a href="https://wa.me/5491130279205" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;padding:8px 14px;border-radius:6px;font-size:.72rem;text-decoration:none;font-family:JetBrains Mono,monospace;letter-spacing:.5px">
-        💬 WhatsApp
-      </a>
-      <a href="mailto:systemsolutions.helpdesk@gmail.com" style="display:inline-flex;align-items:center;gap:6px;background:var(--surface2);color:var(--text);border:1px solid var(--border);padding:8px 14px;border-radius:6px;font-size:.72rem;text-decoration:none;font-family:JetBrains Mono,monospace;letter-spacing:.5px">
-        ✉️ Email
-      </a>`;
-    msgs.appendChild(btns);
-  }
-
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-function addUserMessage(text){
+function addBotMessage(text, delay = 0) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const msgs = document.getElementById('chatMessages');
+      const div = document.createElement('div');
+      div.className = 'chat-msg bot';
+      div.innerHTML = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+      msgs.appendChild(div);
+      scrollBottom();
+      resolve();
+    }, delay);
+  });
+}
+
+function addUserMessage(text) {
   const msgs = document.getElementById('chatMessages');
   const div = document.createElement('div');
   div.className = 'chat-msg user';
   div.textContent = text;
   msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+  scrollBottom();
 }
 
-function showTyping(){
+function addButtons(buttons) {
   const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.className = 'chat-msg bot typing';
-  div.id = 'typingIndicator';
-  div.innerHTML = '<span></span><span></span><span></span>';
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+  const wrap = document.createElement('div');
+  wrap.className = 'chat-btn-group';
+  wrap.id = 'chatBtnGroup';
+  buttons.forEach(b => {
+    const btn = document.createElement('button');
+    btn.className = 'chat-sug-btn';
+    btn.textContent = b.label;
+    btn.onclick = () => {
+      wrap.remove();
+      b.onClick();
+    };
+    wrap.appendChild(btn);
+  });
+  msgs.appendChild(wrap);
+  scrollBottom();
 }
 
-function removeTyping(){
-  const t = document.getElementById('typingIndicator');
-  if(t) t.remove();
+function addContactButtons() {
+  const msgs = document.getElementById('chatMessages');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;gap:8px;margin-top:6px;flex-wrap:wrap';
+  wrap.innerHTML = `
+    <a href="https://wa.me/5491130279205?text=Hola%2C%20quisiera%20una%20consulta%20t%C3%A9cnica" target="_blank"
+       style="display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;padding:9px 16px;border-radius:6px;font-size:.75rem;text-decoration:none;font-family:'JetBrains Mono',monospace;font-weight:700">
+      💬 WhatsApp
+    </a>
+    <a href="mailto:systemsolutions.helpdesk@gmail.com"
+       style="display:inline-flex;align-items:center;gap:6px;background:var(--surface2);color:var(--text);border:1px solid var(--border);padding:9px 16px;border-radius:6px;font-size:.75rem;text-decoration:none;font-family:'JetBrains Mono',monospace">
+      ✉️ Email
+    </a>`;
+  msgs.appendChild(wrap);
+  scrollBottom();
 }
 
-async function sendChatMessage(){
-  const input = document.getElementById('chatInput');
-  const text = input.value.trim();
-  if(!text) return;
-  input.value = '';
-  input.style.height = 'auto';
-  document.getElementById('chatSuggestions').style.display = 'none';
-  addUserMessage(text);
-  chatHistory.push({role:'user', content: text});
-  document.getElementById('chatSendBtn').disabled = true;
-  showTyping();
-  try {
-    const res = await fetch('https://falling-bread-84d3.systemsolutions-helpdesk.workers.dev/',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-haiku-4-5',max_tokens:300,system:SYSTEM_PROMPT,messages:chatHistory})
-    });
-    const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Lo siento, no pude procesar tu consulta. Contactanos por WhatsApp 📱';
-    chatHistory.push({role:'assistant', content: reply});
-    removeTyping();
-    addBotMessage(reply);
-  } catch(e){
-    removeTyping();
-    addBotMessage('Hubo un problema de conexión. Contactanos directamente por WhatsApp: **+54 9 11 3027-9205** 📱');
-  }
-  document.getElementById('chatSendBtn').disabled = false;
+function showTyping(ms = 900) {
+  return new Promise(resolve => {
+    const msgs = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'chat-msg bot typing';
+    div.id = 'typingIndicator';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(div);
+    scrollBottom();
+    setTimeout(() => { div.remove(); resolve(); }, ms);
+  });
+}
+
+function setInputVisible(visible) {
+  const footer = document.querySelector('.chat-footer');
+  footer.style.display = visible ? 'flex' : 'none';
+}
+
+// ══════════════════════════════════════════════
+//  FLUJO PRINCIPAL
+// ══════════════════════════════════════════════
+async function startChat() {
+  chatStep = 'start';
+  setInputVisible(false);
+  await showTyping(700);
+  await addBotMessage('¡Hola! Soy **Terabyte**, el asistente de **SystemSolutions** 💻');
+  await showTyping(600);
+  await addBotMessage('Gracias por contactarte. ¿Cuál es tu nombre?');
+  chatStep = 'ask_name_first';
+  setInputVisible(true);
   document.getElementById('chatInput').focus();
 }
 
-function sendSuggestion(text){
-  document.getElementById('chatInput').value = text;
-  sendChatMessage();
+async function showMenu() {
+  chatStep = 'menu';
+  setInputVisible(false);
+  await showTyping(700);
+  await addBotMessage(`¡Hola, **${userName}**! 😊 ¿En qué te puedo ayudar hoy?\nSeleccioná una opción:`);
+  addButtons(SERVICIOS.map(s => ({
+    label: s.label,
+    onClick: () => handleService(s)
+  })));
 }
 
-function chatKeydown(e){
-  if(e.key==='Enter' && !e.shiftKey){e.preventDefault();sendChatMessage();}
+async function handleService(servicio) {
+  selectedService = servicio;
+  addUserMessage(servicio.label);
+
+  if (servicio.id === 8) {
+    await showTyping(700);
+    await addBotMessage('¡Perfecto! Contanos brevemente cuál es tu consulta y te pasamos con un asesor.');
+    chatStep = 'free_text';
+    setInputVisible(true);
+    return;
+  }
+
+  chatStep = 'service_confirm';
+  await showTyping(800);
+  await addBotMessage(servicio.msg);
+  addButtons([
+    { label: '✅ Sí, quiero contactarme', onClick: () => handleSi() },
+    { label: '❌ No por ahora',           onClick: () => handleNo() },
+    { label: '🔙 Volver al menú',         onClick: () => showMenu() },
+  ]);
 }
 
-function autoResize(el){
-  el.style.height='auto';
-  el.style.height=Math.min(el.scrollHeight,100)+'px';
+async function handleSi() {
+  addUserMessage('✅ Sí, quiero contactarme');
+  await showTyping(600);
+  await addBotMessage(`¡Perfecto! ¿Con qué nombre le decimos al técnico que te va a atender?`);
+  chatStep = 'ask_name_contact';
+  setInputVisible(true);
+  document.getElementById('chatInput').focus();
 }
 
+async function handleNo() {
+  addUserMessage('❌ No por ahora');
+  await showTyping(500);
+  await addBotMessage('¡No hay problema! Si cambiás de opinión, acá vamos a estar. 😊');
+  await showTyping(400);
+  addButtons([
+    { label: '🔙 Volver al menú', onClick: () => showMenu() },
+  ]);
+}
+
+async function handleFreeTextSent(text) {
+  await showTyping(800);
+  await addBotMessage(`¡Gracias por tu consulta! Un asesor te va a responder pronto. ¿Por dónde preferís que te contactemos?`);
+  addContactButtons();
+  await showTyping(400);
+  addButtons([{ label: '🔙 Volver al menú', onClick: () => showMenu() }]);
+  chatStep = 'done';
+  setInputVisible(false);
+}
+
+async function handleNameContact(name) {
+  await showTyping(600);
+  await addBotMessage(`¡Buenísimo, **${name}**! ¿Por dónde preferís hablar con el técnico?`);
+  addContactButtons();
+  await showTyping(500);
+  await addBotMessage('¡Muchas gracias por comunicarte con **SystemSolutions**! 😊 Esperamos ayudarte pronto.');
+  addButtons([{ label: '🔙 Volver al menú', onClick: () => showMenu() }]);
+  chatStep = 'done';
+  setInputVisible(false);
+}
+
+// ══════════════════════════════════════════════
+//  EVENTOS DE INPUT
+// ══════════════════════════════════════════════
+async function sendUserText() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = 'auto';
+  addUserMessage(text);
+
+  if (chatStep === 'ask_name_first') {
+    userName = text;
+    await showMenu();
+  } else if (chatStep === 'ask_name_contact') {
+    await handleNameContact(text);
+  } else if (chatStep === 'free_text') {
+    await handleFreeTextSent(text);
+  }
+}
+
+function chatKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendUserText(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+// ══════════════════════════════════════════════
+//  TOGGLE VENTANA CHAT
+// ══════════════════════════════════════════════
+function toggleChat() {
+  const win = document.getElementById('chatWindow');
+  win.classList.toggle('chat-open');
+  if (win.classList.contains('chat-open') && !chatInitialized) {
+    chatInitialized = true;
+    document.getElementById('chatBubble').querySelector('.chat-badge').style.display = 'none';
+    startChat();
+  }
+}
+
+// ══════════════════════════════════════════════
+//  ESTILOS EXTRA PARA BOTONES DEL CHAT
+// ══════════════════════════════════════════════
+const extraStyles = document.createElement('style');
+extraStyles.textContent = `
+  .chat-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px 0 6px;
+    align-self: flex-start;
+    max-width: 100%;
+  }
+  .chat-btn-group .chat-sug-btn {
+    font-size: .72rem;
+    padding: 7px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: normal;
+    text-align: left;
+  }
+`;
+document.head.appendChild(extraStyles);
+
+// ══════════════════════════════════════════════
+//  TERMINAL ANIMADO (system_diagnostic.sh)
+// ══════════════════════════════════════════════
+const termLines = [
+  { type: 'cmd', prompt: '$', text: 'sudo ./system_diagnostic.sh --full' },
+  { type: 'out', text: 'Iniciando diagnóstico del sistema...' },
+  { type: 'out', text: 'Verificando temperatura de CPU...        ', extra: 'OK', cls: 't-ok' },
+  { type: 'out', text: 'Chequeando estado del disco (SMART)...   ', extra: 'OK', cls: 't-ok' },
+  { type: 'out', text: 'Analizando uso de memoria RAM...         ', extra: 'OK', cls: 't-ok' },
+  { type: 'out', text: 'Escaneando procesos en segundo plano...  ', extra: 'AVISO', cls: 't-warn' },
+  { type: 'out', text: 'Buscando malware y software no deseado...', extra: '3 encontrados', cls: 't-err' },
+  { type: 'out', text: 'Verificando integridad de Windows...     ', extra: 'OK', cls: 't-ok' },
+  { type: 'out', text: 'Revisando drivers desactualizados...     ', extra: '2 pendientes', cls: 't-warn' },
+  { type: 'out', text: '' },
+  { type: 'cmd', prompt: '$', text: 'echo "Diagnóstico completo. Listo para reparar."' },
+  { type: 'out', text: 'Diagnóstico completo. Listo para reparar.', cls: 't-ok' },
+  { type: 'out', text: '' },
+  { type: 'cmd', prompt: '$', text: '_', cursorOnly: true },
+];
+
+function buildTermLineHTML(line) {
+  if (line.cursorOnly) {
+    return `<div class="t-line"><span class="t-prompt">${line.prompt}</span><span class="t-cursor"></span></div>`;
+  }
+  if (line.type === 'cmd') {
+    return `<div class="t-line"><span class="t-prompt">${line.prompt}</span><span class="t-cmd">${line.text}</span></div>`;
+  }
+  let extraHTML = '';
+  if (line.extra) {
+    extraHTML = ` <span class="${line.cls}">[${line.extra}]</span>`;
+  }
+  const baseCls = (line.cls && !line.extra) ? line.cls : '';
+  return `<div class="t-line t-out"><span class="${baseCls}">${line.text || '&nbsp;'}</span>${extraHTML}</div>`;
+}
+
+function runTerminalAnimation() {
+  const body = document.getElementById('termBody');
+  if (!body) return;
+  body.innerHTML = '';
+  let i = 0;
+
+  function next() {
+    if (i >= termLines.length) {
+      setTimeout(() => runTerminalAnimation(), 4000);
+      return;
+    }
+    const line = termLines[i];
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = buildTermLineHTML(line);
+    body.appendChild(wrapper.firstElementChild);
+    i++;
+    const delay = line.cursorOnly ? 0 : (line.type === 'cmd' ? 500 : 180);
+    setTimeout(next, delay);
+  }
+  next();
+}
+
+// ══════════════════════════════════════════════
+//  REVEAL ON SCROLL
+// ══════════════════════════════════════════════
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('on');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  items.forEach(item => observer.observe(item));
+}
+
+// ══════════════════════════════════════════════
+//  CURSOR PERSONALIZADO
+// ══════════════════════════════════════════════
+function initCustomCursor() {
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('cursorTrail');
+  if (!cursor || !trail) return;
+  let trailX = 0, trailY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
+    trailX += (e.clientX - trailX) * 0.2;
+    trailY += (e.clientY - trailY) * 0.2;
+    trail.style.transform = `translate(${trailX - 2}px, ${trailY - 2}px)`;
+  });
+
+  document.addEventListener('mousedown', () => cursor.style.background = 'var(--primary)');
+  document.addEventListener('mouseup', () => cursor.style.background = 'transparent');
+}
+
+// ══════════════════════════════════════════════
+//  MODAL "CONSULTAR AHORA"
+// ══════════════════════════════════════════════
 const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 document.getElementById('consultarModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('modal-open')});
@@ -1114,7 +1282,7 @@ function enviarConsulta(){
     telefono: telefono,
     asunto: asunto,
     mensaje: mensaje||'—',
-    to_email: 'systemsolutions_helpdesk@gmail.com'
+    to_email: 'systemsolutions.helpdesk@gmail.com'
   }).then(()=>{
     document.getElementById('successNombre').textContent=nombre;
     document.getElementById('modalForm').style.display='none';
@@ -1133,8 +1301,15 @@ function enviarConsulta(){
     btn.textContent='Enviar consulta →';btn.disabled=false;
   });
 }
-(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ══════════════════════════════════════════════
+//  INICIALIZACIÓN GENERAL
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  try { initCustomCursor(); } catch (e) { console.error('cursor init error', e); }
+  try { runTerminalAnimation(); } catch (e) { console.error('terminal init error', e); }
+  try { initReveal(); } catch (e) { console.error('reveal init error', e); }
+});
 </script>
 </body>
 </html>
