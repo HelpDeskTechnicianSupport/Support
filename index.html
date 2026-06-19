@@ -15,7 +15,7 @@
   </script>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SystemSolutions — Soporte Técnico Premium</title>
+  <title>HelpDesk Technician Support — Soporte Técnico Premium</title>
   <link rel="icon" type="image/png" href="https://systemsolutionshelpdesk.github.io/SoporteTecnico/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
@@ -1392,7 +1392,7 @@
 <body>
 
 <nav>
-  <div class="logo">System<span>Solutions</span></div>
+  <div class="logo">HelpDesk<span>Technician Support</span></div>
   <ul class="nav-links">
     <li><a href="#nosotros">Quiénes somos</a></li>
     <li class="has-dropdown">
@@ -1916,8 +1916,8 @@
 </a>
 
 <footer>
-  <div class="footer-logo">SystemSolutions</div>
-  <p>© 2026 SystemSolutions · Infraestructura Informática Profesional · Buenos Aires</p>
+  <div class="footer-logo">HelpDesk Technician Support</div>
+  <p>© 2026 HelpDesk Technician Support · Infraestructura Informática Profesional · Buenos Aires</p>
   <p style="color:var(--accent); font-weight:600; font-size:.75rem">SISTEMA ACTIVO ●</p>
 </footer>
 
@@ -1945,7 +1945,7 @@
 </div>
 
 <script>
-// Mantener idéntica la lógica del Chatbot de SystemSolutions y animaciones del archivo original
+// Mantener idéntica la lógica del Chatbot de HelpDesk Technician Support y animaciones del archivo original
 let chatInitialized = false;
 let chatStep = 'start';
 let selectedService = null;
@@ -2050,7 +2050,7 @@ async function startChat() {
   chatStep = 'start';
   setInputVisible(false);
   await showTyping(700);
-  await addBotMessage('Saludos. Soy **Terabyte**, asistente inteligente de **SystemSolutions** 💻');
+  await addBotMessage('Saludos. Soy **Terabyte**, asistente inteligente de **HelpDesk Technician Support** 💻');
   await showTyping(600);
   await addBotMessage('Para un trato formal personalizado, ¿podría indicarme su nombre?');
   chatStep = 'ask_name_first';
@@ -2125,7 +2125,7 @@ async function handleNameContact(name) {
   await addBotMessage(`Excelente, **${name}**. ¿Qué vía de comunicación formal considera más idónea para iniciar la sesión técnica?`);
   addContactButtons();
   await showTyping(500);
-  await addBotMessage('Agradecemos su comunicación formal con **SystemSolutions**. Prontamente resolveremos la incidencia.');
+  await addBotMessage('Agradecemos su comunicación formal con **HelpDesk Technician Support**. Prontamente resolveremos la incidencia.');
   addButtons([{ label: '🔙 Volver al menú', onClick: () => showMenu() }]);
   chatStep = 'done';
   setInputVisible(false);
