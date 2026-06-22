@@ -7,24 +7,23 @@
 <!-- PWA META -->
 <meta name="application-name" content="SS Gestión">
 <meta name="description" content="Sistema de gestión para System Solutions">
-<meta name="theme-color" content="#03050a">
+<meta name="theme-color" content="#12181f">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SS Gestión">
 <link rel="manifest" id="pwa-manifest">
-<!-- ENLACE ABSOLUTO E INFALIBLE PARA EL FAVICON -->
 <link rel="icon" type="image/png" href="https://helpdesktechniciansupport.github.io/Support/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#03050a;--surface:#080d18;--card:#0a0e1a;--card2:#0d1220;
-  --primary:#7c6dfa;--primary-dim:rgba(124,109,250,0.15);
-  --cyan:#4af0ff;--cyan-dim:rgba(74,240,255,0.12);
+  --bg:#12181f;--surface:#1c2430;--card:#202a38;--card2:#243040;
+  --primary:#e8590c;--primary-dim:rgba(232,89,12,0.16);
+  --cyan:#ff8c42;--cyan-dim:rgba(255,140,66,0.13);
   --amber:#ffb700;--amber-dim:rgba(255,183,0,0.12);
   --green:#25D366;--green-dim:rgba(37,211,102,0.12);
   --red:#ff4b4b;--red-dim:rgba(255,75,75,0.12);
-  --text:#e0e6ed;--muted:#4a5568;--border:#131929;--border2:#1e2a3d;
+  --text:#e8edf2;--muted:#5a6a7e;--border:#1e2d3d;--border2:#273848;
   --sidebar-w:220px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -60,13 +59,13 @@ body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospa
 .form-grid .span3{grid-column:1/-1}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:10px;letter-spacing:1px;color:var(--muted);font-weight:700}
-input,select,textarea{background:#0a0f1e;border:1px solid var(--border2);color:var(--text);padding:11px 14px;border-radius:6px;font-family:inherit;font-size:13px;font-weight:700;width:100%;transition:border-color 0.15s}
+input,select,textarea{background:#182030;border:1px solid var(--border2);color:var(--text);padding:11px 14px;border-radius:6px;font-family:inherit;font-size:13px;font-weight:700;width:100%;transition:border-color 0.15s}
 input:focus,select:focus,textarea:focus{border-color:var(--primary);outline:none}
 textarea{resize:vertical;min-height:80px}
-select option{background:#0a0f1e}
+select option{background:#182030}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:6px;font-family:inherit;font-size:12px;font-weight:800;letter-spacing:1px;cursor:pointer;border:none;transition:all 0.15s;white-space:nowrap}
-.btn-primary{background:var(--primary);color:#000}
-.btn-primary:hover{background:#9185ff}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:#ff6b1a}
 .btn-primary:disabled{opacity:0.4;cursor:not-allowed}
 .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border2)}
 .btn-ghost:hover{color:var(--text)}
@@ -74,8 +73,8 @@ select option{background:#0a0f1e}
 .btn-sm{padding:6px 12px;font-size:11px}
 .btn-wa{background:var(--green-dim);color:var(--green);border:1px solid rgba(37,211,102,0.25)}
 .btn-wa:hover{background:var(--green);color:#000}
-.btn-edit{background:var(--primary-dim);color:var(--primary);border:1px solid rgba(124,109,250,0.25)}
-.btn-edit:hover{background:var(--primary);color:#000}
+.btn-edit{background:var(--primary-dim);color:var(--primary);border:1px solid rgba(232,101,26,0.25)}
+.btn-edit:hover{background:var(--primary);color:#fff}
 .btn-del{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,75,75,0.25)}
 .btn-del:hover{background:var(--red);color:#fff}
 .search-bar{position:relative;margin-bottom:16px}
@@ -88,14 +87,14 @@ td{padding:13px 14px;border-bottom:1px solid var(--border);vertical-align:middle
 tr:hover td{background:rgba(255,255,255,0.02)}
 .td-actions{display:flex;gap:6px;flex-wrap:wrap}
 .badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:800;letter-spacing:0.5px;white-space:nowrap}
-.badge-pendiente{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,183,0,0.2)}
-.badge-taller{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,183,0,0.2)}
-.badge-listo{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(74,240,255,0.2)}
+.badge-pendiente{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,204,68,0.2)}
+.badge-taller{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,204,68,0.2)}
+.badge-listo{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(240,144,48,0.2)}
 .badge-ingreso{background:var(--green-dim);color:var(--green);border:1px solid rgba(37,211,102,0.2)}
 .badge-egreso{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,75,75,0.2)}
-.badge-aprobado{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(74,240,255,0.2)}
+.badge-aprobado{background:var(--cyan-dim);color:var(--cyan);border:1px solid rgba(240,144,48,0.2)}
 .badge-rechazado{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,75,75,0.2)}
-.badge-espera{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,183,0,0.2)}
+.badge-espera{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,204,68,0.2)}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:20px}
 .stat-card{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:18px}
 .stat-val{font-size:22px;font-weight:800;margin-bottom:4px}
@@ -104,7 +103,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .empty{text-align:center;padding:48px 20px;color:var(--muted)}
 .empty svg{margin-bottom:12px;opacity:0.3}
 .empty p{font-size:12px;letter-spacing:1px}
-.overlay{display:none;position:fixed;inset:0;background:rgba(3,5,10,0.88);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:20px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(10,11,13,0.92);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:20px}
 .overlay.active{display:flex}
 .modal{background:var(--card);border:1px solid var(--border2);border-top:3px solid var(--primary);border-radius:10px;padding:28px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;animation:slideIn 0.2s ease}
 .modal.wa{border-top-color:var(--green)}
@@ -164,7 +163,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
   <div class="sidebar-footer">
     <div style="margin-bottom:8px">v2.1 · IndexedDB</div>
-    <button onclick="exportarDatos()" style="background:var(--primary);color:#000;border:none;padding:8px 0;border-radius:6px;font-family:inherit;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;width:100%;margin-bottom:6px">📤 EXPORTAR</button>
+    <button onclick="exportarDatos()" style="background:var(--primary);color:#fff;border:none;padding:8px 0;border-radius:6px;font-family:inherit;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;width:100%;margin-bottom:6px">📤 EXPORTAR</button>
     <label style="background:var(--green-dim);color:var(--green);border:1px solid rgba(37,211,102,0.3);padding:8px 0;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;width:100%;display:block;text-align:center">
       📥 IMPORTAR
       <input type="file" accept=".json" onchange="importarDatos(event)" style="display:none">
@@ -455,7 +454,6 @@ function calcSaldo(p){
   const s=parseFloat(document.getElementById(p+'-senia').value)||0;
   const el=document.getElementById(p+'-saldo-preview');
   if(el) el.textContent=m>0?(m-s>=0?`Saldo pendiente: ${fmtPeso(m-s)}`:'⚠ Seña mayor al monto'):'';
-  // Mostrar aviso en modal edición si va a registrar en caja
   if(p==='et'){
     const aviso=document.getElementById('et-caja-aviso');
     const estado=document.getElementById('et-estado').value;
@@ -525,7 +523,6 @@ async function guardarTrabajo(){
 
   const newId=await dbAdd('trabajos',data);
 
-  // ✅ AUTO-CAJA: Si hay seña → ingreso automático en Caja
   if(senia>0){
     await dbAdd('caja',{
       tipo:'ingreso',
@@ -587,7 +584,6 @@ async function editTrabajo(id){
   document.getElementById('et-fechaEntrega').value=item.fechaEntrega||'';
   document.getElementById('et-notas').value=item.notas||'';
   calcSaldo('et');
-  // Mostrar aviso si hay saldo pendiente
   const aviso=document.getElementById('et-caja-aviso');
   if(aviso && item.estado!=='Listo' && (item.saldo||0)>0){
     aviso.style.display='block';
@@ -598,7 +594,6 @@ async function editTrabajo(id){
   openModal('modal-trabajo');
 }
 
-// Actualizar aviso al cambiar estado en modal
 document.getElementById('et-estado').addEventListener('change', function(){
   calcSaldo('et');
   const aviso=document.getElementById('et-caja-aviso');
@@ -633,7 +628,6 @@ async function updateTrabajo(){
   });
   await dbPut('trabajos',item);
 
-  // ✅ AUTO-CAJA: Si cambia a Listo y hay saldo → ingreso automático
   if(nuevoEstado==='Listo' && estadoAnterior!=='Listo' && saldo>0){
     await dbAdd('caja',{
       tipo:'ingreso',
@@ -647,7 +641,6 @@ async function updateTrabajo(){
     closeModal('modal-trabajo');
     toast(`✅ Listo · Saldo ${fmtPeso(saldo)} registrado en Caja`);
 
-  // 🔄 REVERTIR: Si vuelve de Listo a Pendiente/Taller → eliminar el ingreso de caja
   } else if(estadoAnterior==='Listo' && nuevoEstado!=='Listo'){
     const todaCaja=await dbGetAll('caja');
     const movAEliminar=todaCaja.filter(c=>c.auto && c.trabajoId===editTrabajoId && c.categoria==='Trabajo');
@@ -763,7 +756,7 @@ async function importarDatos(event){
     for(const s of stores){
       if(!backup.datos[s]) continue;
       for(const item of backup.datos[s]){
-        const {id, ...sinId} = item; // quitar el id para que no haya conflictos
+        const {id, ...sinId} = item;
         await dbAdd(s, sinId);
         total++;
       }
@@ -773,7 +766,7 @@ async function importarDatos(event){
   } catch(e) {
     toast('Error al importar: archivo corrupto', true);
   }
-  event.target.value = ''; // reset input
+  event.target.value = '';
 }
 
 // ── PWA: Manifest dinámico ──
@@ -784,8 +777,8 @@ async function importarDatos(event){
     description: "Sistema de gestión para System Solutions",
     start_url: "./",
     display: "standalone",
-    background_color: "#03050a",
-    theme_color: "#03050a",
+    background_color: "#12181f",
+    theme_color: "#12181f",
     orientation: "portrait-primary",
     icons: [
       { src: "https://fernandoercoli.github.io/SoporteTecnico/favicon.png", sizes: "192x192", type: "image/png" },
@@ -829,12 +822,11 @@ let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredPrompt = e;
-  // Mostrar botón en sidebar footer
   const footer = document.querySelector('.sidebar-footer');
   if(footer){
     const btn = document.createElement('button');
     btn.innerHTML = '📲 Instalar App';
-    btn.style.cssText = 'background:var(--primary);color:#000;border:none;padding:8px 12px;border-radius:6px;font-family:inherit;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;width:100%;margin-top:10px';
+    btn.style.cssText = 'background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:6px;font-family:inherit;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;width:100%;margin-top:10px';
     btn.onclick = async () => {
       if(!deferredPrompt) return;
       deferredPrompt.prompt();
